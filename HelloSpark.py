@@ -4,7 +4,7 @@ from pyspark import SparkConf
 from pyspark.sql import *
 from lib.logger import Log4j
 import traceback
-from lib.utils import get_spark_app_conf, load_survey_df
+from lib.utils import get_spark_app_conf, load_survey_df,count_by_country
 #this is the change
 
 '''
@@ -47,17 +47,31 @@ if __name__ == "__main__":
         #     .sys.argv[1]
 
         #method2 using function from utils.py
-        survey_df = load_survey_df(spark,sys.argv[1])
-        count_df=survey_df \
-        .where("Age < 40")
+        survey_df=load_survey_df(spark,sys.argv[1])
+        # partitioned_survey_df=survey_df.repartition(2)
 
+        # count_df=count_by_country(partitioned_survey_df)
+        # logger.info(count_df.collect()) #Instead of show() we used collect()
+        print('1=====================================================')
 
-        survey_df.show() # Action to show the dataFrame which was lazily evaluated in above statement
-        logger.info("Finished HelloSark")
-        spark.stop()
+        #this is method 1 in method 2 we will move the code to a function
+        # count_df2=survey_df \
+        # .where("Age < 40")\
+        # .select("Age","Gender","Country","state")\
+        # .groupBy("Country")\
+        # .count()
+        # count_df2.show()
+
+        print('2=====================================================')
+        # survey_df.show() # Action to show the dataFrame which was lazily evaluated in above statement
+        logger.info("Finished HelloSpark")
+        input("Press ENterer")
 
     except Exception as err:
         print("Something went wrong",err)
         print(traceback.format_exc())
+
+    finally:
+        spark.stop()
 
 
