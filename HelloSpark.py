@@ -48,10 +48,10 @@ if __name__ == "__main__":
 
         #method2 using function from utils.py
         survey_df=load_survey_df(spark,sys.argv[1])
-        # partitioned_survey_df=survey_df.repartition(2)
+        partitioned_survey_df=survey_df.repartition(2)
 
-        # count_df=count_by_country(partitioned_survey_df)
-        # logger.info(count_df.collect()) #Instead of show() we used collect()
+        count_df=count_by_country(partitioned_survey_df)
+        logger.info(count_df.collect()) #Instead of show() we used collect()
         print('1=====================================================')
 
         #this is method 1 in method 2 we will move the code to a function
